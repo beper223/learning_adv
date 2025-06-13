@@ -1,8 +1,7 @@
-import datetime
+from datetime import datetime
 
 from pydantic import BaseModel, EmailStr, HttpUrl, Field
 from decimal import Decimal
-import typing
 
 
 class Product(BaseModel):
