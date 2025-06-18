@@ -7,7 +7,7 @@
 # hardness: значение по шкале Мооса, float
 
 from db_connector import engine, Base
-from sqlalchemy import Integer, String, Float, UniqueConstraint, Index, DateTime, ForeignKey
+from sqlalchemy import Integer, String, Float, UniqueConstraint, Index, DateTime, ForeignKey, Table, Column
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
 
@@ -21,6 +21,18 @@ class Mineral(Base):
 
     shipments_info: Mapped[list['Shipment']] = relationship('Shipment', back_populates='mineral_info')
 
+# Задача 7. Связь Salon и Shipment через M2M
+#
+# Один Shipment может быть доставлен в несколько салонов
+# Один Salon может принимать разные Shipment
+# Настроить Many-to-Many через таблицу salon_shipment_association
+salon_shipment_association = Table(
+    "salon_shipments",
+    Base.metadata,
+    Column("salon_id", ForeignKey('salons.id'), primary_key=True),
+    Column("shipment_id", ForeignKey('shipments.id'), primary_key=True)
+)
+
 # Задача 2. Создание модели Salon
 # Создать модель элитного бутика. Поля:
 #
@@ -28,7 +40,6 @@ class Mineral(Base):
 # name: название
 # location: строка
 # Пара (name, location) должна быть уникальна.
-
 class Salon(Base):
     __tablename__ = "salons"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
@@ -65,10 +76,4 @@ class Shipment(Base):
 
     mineral_info: Mapped[list[Mineral]] = relationship('Mineral', back_populates='shipments_info')
 
-# Задача 7. Связь Salon и Shipment через M2M
-#
-# Один Shipment может быть доставлен в несколько салонов
-# Один Salon может принимать разные Shipment
-# Настроить Many-to-Many через таблицу salon_shipment_association
-class Salon_shipment(Base):
-    __tablename__ = "salon_shipment_association"
+
