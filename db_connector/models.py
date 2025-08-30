@@ -5,6 +5,7 @@
 # name: уникальное имя (строка, макс. 50)
 # color: строка
 # hardness: значение по шкале Мооса, float
+# pip install python-dotenv
 
 from db_connector import engine, Base
 from sqlalchemy import Integer, String, Float, UniqueConstraint, Index, DateTime, ForeignKey, Table, Column
